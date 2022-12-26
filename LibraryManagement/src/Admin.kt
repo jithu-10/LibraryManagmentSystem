@@ -35,7 +35,7 @@ class Admin internal constructor(
             LibraryDB.removeBookInventory(bookInventory)
         }
         else if(quantityDiff<0){
-            throw Exception("Only ${bookInventory.getAvailableQuantity()} books available")
+            throw LimitExceededException("Only ${bookInventory.getAvailableQuantity()} books available")
         }
         else{
             bookInventory.updateTotalQuantity(-quantity)

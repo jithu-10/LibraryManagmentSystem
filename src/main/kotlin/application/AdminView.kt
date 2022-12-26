@@ -2,6 +2,7 @@ package application
 
 import Admin
 import Book
+import LimitExceededException
 
 object AdminView {
 
@@ -90,7 +91,13 @@ object AdminView {
         val choice = Helper.getInputWithinRange(1,bookInventories.size,null)
         println("Enter No of Books to be removed : ")
         val quantity = Helper.getInputWithinRange(1,Int.MAX_VALUE,null)
-        admin.decreaseBookQuantity(bookInventories[choice-1].book,quantity)
+        try{
+            admin.decreaseBookQuantity(bookInventories[choice-1].book,quantity)
+        }
+        catch (e : LimitExceededException){
+            println(e.message)
+        }
+
     }
 
     private fun viewRentedBooks(admin : Admin){

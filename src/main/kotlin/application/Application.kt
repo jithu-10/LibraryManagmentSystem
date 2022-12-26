@@ -1,9 +1,11 @@
 package application
 
 import Account
+import AccountNotFoundException
 import Address
-import AuthenticationException
+import AuthenticationFailedException
 import Book
+import PhoneNumberAlreadyExistException
 import UserData
 
 object Application {
@@ -71,7 +73,7 @@ object Application {
         try{
             val userData : UserData = Account.signIn(phoneNumber,password)
             signingInOptions(userData)
-        }catch (e : AuthenticationException){
+        }catch (e : AccountNotFoundException){
             println(e.message)
         }
     }
@@ -90,7 +92,7 @@ object Application {
                 println("Signed Up Successfully. You can sign in now ")
                 break
             }
-            catch (e : Exception){
+            catch (e : PhoneNumberAlreadyExistException){
                 println(e.message)
             }
         }while(true)
@@ -101,8 +103,18 @@ object Application {
         println("2.Sign In as Customer")
 
         when(Helper.getInputWithinRange(1,2,null)){
-            1 -> AdminView.menu(Account.signInAsAdmin(userData))
-            2 -> CustomerView.menu(Account.signInAsCustomer(userData))
+            1 ->try{
+                AdminView.menu(Account.signInAsAdmin(userData))
+            } catch (e : AuthenticationFailedException){
+                println(e.message)
+            }
+
+            2 ->try{
+                CustomerView.menu(Account.signInAsCustomer(userData))
+            }catch (e : AuthenticationFailedException){
+                println(e.message)
+            }
+
 
         }
     }

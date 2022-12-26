@@ -97,7 +97,6 @@ object LibraryDB{
 object RentedBooksDB{
 
     private val rentedBooksAndRentalDetails : MutableMap<RentalBook, UserData> = mutableMapOf()
-    private val rentedBooksAndRentalDetailsHistory : MutableMap<RentalBook, UserData> = mutableMapOf()
 
     internal fun getRentedBooksAndRentalDetails() : Map<RentalBook, UserData>{
         return rentedBooksAndRentalDetails

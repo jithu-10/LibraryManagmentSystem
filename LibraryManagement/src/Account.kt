@@ -5,7 +5,7 @@ object Account{
 
     fun signUp(userName : String, phoneNumber : Long, password : String){
         if(AccountDB.isPhoneNumberAlreadyExist(phoneNumber)){
-            throw Exception("Phone Number already exist")
+            throw PhoneNumberAlreadyExistException("Phone Number already exist")
         }
         val userData = UserData(userName, phoneNumber)
         val customer = Customer(userData)
@@ -13,16 +13,16 @@ object Account{
     }
 
     fun signIn(phoneNumber: Long, password: String) : UserData {
-        return AccountDB.isAccountExist(phoneNumber, password) ?:throw AuthenticationException("Account Not Found ")
+        return AccountDB.isAccountExist(phoneNumber, password) ?:throw AccountNotFoundException("Account Not Found ")
     }
 
     fun signInAsAdmin(userData: UserData) : Admin {
-        val user = AccountDB.getUser(userData, Admin::class.simpleName) ?: throw AuthenticationException("Authentication Failed")
+        val user = AccountDB.getUser(userData, Admin::class.simpleName) ?: throw AuthenticationFailedException("Authentication Failed")
         return user as Admin
     }
 
     fun signInAsCustomer(userData: UserData) : Customer {
-        val user = AccountDB.getUser(userData, Customer::class.simpleName) ?: throw AuthenticationException("Authentication Failed")
+        val user = AccountDB.getUser(userData, Customer::class.simpleName) ?: throw AuthenticationFailedException("Authentication Failed")
         return user as Customer
     }
 

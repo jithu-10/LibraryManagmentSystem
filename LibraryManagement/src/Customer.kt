@@ -15,7 +15,7 @@ class Customer internal constructor(
         RentedBooksDB.addRentedBooksAndRentalDetails(rentalBook, userData)
         if(deliveryMethod== DeliveryMethod.HOME_DELIVERY){
             if(userData.address==null){
-                throw Exception("Address not found -  Set Address ")
+                throw AddressNotFoundException("Address not found -  Set Address ")
             }
         }
         borrowedBooksList.add(rentalBook)
